@@ -13,7 +13,7 @@ from routes.cart import cart_bp
 from routes.coupons import coupons_bp
 from routes.pending_orders import pending_orders_bp
 from routes.distribute_coupons import distribute_coupons_bp
-from flask import Flask, render_template
+from flask import Flask
 from models.tables import db, User, Coupon
 
 
