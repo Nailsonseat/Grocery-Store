@@ -23,7 +23,6 @@ def add_products():
         rate_per_unit = request.form['rate_per_unit']
         product_image = request.files['product_image']
 
-        # Convert manufacture_date and expiry_date to date objects
         if manufacture_date:
             manufacture_date = datetime.strptime(manufacture_date, '%Y-%m-%d')
             manufacture_date = manufacture_date.strftime('%d-%m-%Y')
@@ -55,7 +54,7 @@ def add_products():
                 os.rename('/'.join(product_image_path.split('/')
                           [:-1])+'/'+category.image_filename, product_image_path)
             else:
-                image_filename = 'placeholder.jpg'  # Use the placeholder image
+                image_filename = 'placeholder.jpg'
 
         if manufacture_date == '':
             manufacture_date = None
@@ -63,7 +62,6 @@ def add_products():
         if expiry_date == '':
             expiry_date = None
 
-        # Create a new Product instance and add it to the database
         new_product = Product(name=product_name, category_id=category_id,
                               manufacture_date=manufacture_date, expiry_date=expiry_date, rate_per_unit=rate_per_unit, image_filename=image_filename)
         db.session.add(new_product)

@@ -18,7 +18,7 @@ def categories():
                 'static', 'category_images', image_filename))
 
         else:
-            image_filename = 'placeholder.jpg'  # Use the placeholder image
+            image_filename = 'placeholder.jpg'
 
         # Create a new Category instance and add it to the database
         new_category = Category(name=new_category_name,

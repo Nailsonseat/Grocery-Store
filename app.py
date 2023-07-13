@@ -20,8 +20,6 @@ from models.tables import db, User, Coupon
 app = Flask(__name__)
 app.secret_key = '345357evfe3234r3'
 
-# Configure the database URI (replace 'sqlite:///your_database.db' with the path to your SQLite database file)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main'
 
 app.config['SQLALCHEMY_BINDS'] = {
@@ -52,7 +50,6 @@ def create_initial_admin():
 # Initialize the database
 db.init_app(app)
 
-# Create the tables (this step should be performed once to create the tables in the database)
 with app.app_context():
     db.create_all(bind_key=['users', 'products'])
     create_initial_admin()
