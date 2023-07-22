@@ -1,10 +1,13 @@
 # app.py
 
+from flask_sqlalchemy import SQLAlchemy
 from routes.login import login_bp
 from routes.register import register_bp
 from routes.admin_dashboard import admin_dashboard_bp
+from routes.home import home_bp
 from flask import Flask, render_template
 from models.users_db import db, User
+
 
 app = Flask(__name__)
 app.secret_key = '345357evfe3234r3'
@@ -44,7 +47,7 @@ with app.app_context():
 app.register_blueprint(register_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(admin_dashboard_bp)
-
+app.register_blueprint(home_bp)
 # ... (other routes and code)
 
 if __name__ == '__main__':
