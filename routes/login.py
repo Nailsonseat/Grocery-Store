@@ -1,7 +1,7 @@
 # routes/login.py
 
-from flask import Blueprint, render_template, request, redirect, session
-from models import User
+from flask import Blueprint, render_template, request, redirect, session, url_for
+from models.tables import User
 
 login_bp = Blueprint('login', __name__)
 
@@ -25,7 +25,7 @@ def login():
                     return redirect('/admin/dashboard')
                 else:
                     # Redirect to regular user dashboard
-                    return redirect('/home')
+                    return redirect(url_for('home.home', username=username))
 
             else:
                 return "Incorrect password. Please try again."
