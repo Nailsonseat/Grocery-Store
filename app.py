@@ -6,7 +6,7 @@ from routes.register import register_bp
 from routes.admin_dashboard import admin_dashboard_bp
 from routes.home import home_bp
 from flask import Flask, render_template
-from models.users_db import db, User
+from models.tables import db, User
 
 
 app = Flask(__name__)

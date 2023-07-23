@@ -1,7 +1,7 @@
 # routes/register.py
 
 from flask import Blueprint, render_template, request
-from models import db, User
+from models.tables import db, User
 
 register_bp = Blueprint('register', __name__)
 

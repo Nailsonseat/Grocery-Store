@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template
-from models.users_db import db, Product
+from models.tables import db, Product
 
 
 home_bp = Blueprint('home', __name__)
