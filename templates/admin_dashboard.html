@@ -1,5 +1,3 @@
-<!-- templates/admin_dashboard.html -->
-
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +11,10 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <h1>Welcome, Admin!</h1>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>Welcome, Admin!</h1>
+                    <a href="{{ url_for('logout.logout') }}" class="btn btn-danger">Logout</a>
+                </div>
                 <p>Here are your options:</p>
                 <ul class="list-group">
                     <li class="list-group-item">

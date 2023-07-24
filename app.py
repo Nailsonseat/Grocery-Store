@@ -5,6 +5,7 @@ from routes.login import login_bp
 from routes.register import register_bp
 from routes.admin_dashboard import admin_dashboard_bp
 from routes.home import home_bp
+from routes.logout import logout_bp
 from flask import Flask, render_template
 from models.tables import db, User
 
@@ -48,6 +49,7 @@ app.register_blueprint(register_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(admin_dashboard_bp)
 app.register_blueprint(home_bp)
+app.register_blueprint(logout_bp)
 # ... (other routes and code)
 
 if __name__ == '__main__':
