@@ -39,7 +39,16 @@ class Product(db.Model):
     __bind_key__ = 'products'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    section = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
     manufacture_date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
     rate_per_unit = db.Column(db.Float, nullable=False)
+
+
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    landmark = db.Column(db.String(100))
+    city = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.String(50), nullable=False)
+    zip_code = db.Column(db.String(20), nullable=False)
