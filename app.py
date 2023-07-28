@@ -2,6 +2,7 @@
 
 from routes.login import login_bp
 from routes.register import register_bp
+from routes.admin_dashboard import admin_dashboard_bp
 from flask import Flask, render_template
 from models import db, User
 
@@ -14,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 def create_initial_admin():
     admin_username = 'admin'
-    admin_password = 'adminpassword'
+    admin_password = 'adminpass'
 
     admin_user = User.query.filter_by(username=admin_username).first()
     if not admin_user:
@@ -36,6 +37,7 @@ with app.app_context():
 
 app.register_blueprint(register_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(admin_dashboard_bp)
 
 # ... (other routes and code)
 
