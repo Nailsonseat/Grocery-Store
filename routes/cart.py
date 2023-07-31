@@ -73,3 +73,37 @@ def view_cart():
 
     return render_template('cart.html', cart_products=cart_products, cart_map=cart_map, grand_total=delivery_charge(grand_total), addresses=addresses, coupon_map=coupon_map)
 
+
+@cart_bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+    # Get the user_id from the session (you may need to adjust this based on your session setup)
+    user_id = session.get('user_id')
+
+    # Check if the product is already in the cart, if not, add it
+    cart_item = Cart.query.filter_by(
+        user_id=user_id, product_id=product_id).first()
+    if not cart_item:
+        new_cart_item = Cart(
+            user_id=user_id, product_id=product_id, quantity=1)
+        db.session.add(new_cart_item)
+    else:
+        cart_item.quantity += 1
+
+    db.session.commit()
+    return redirect(request.referrer)
+
+
+@cart_bp.route('/remove_from_cart/<int:product_id>', methods=['POST'])
+def remove_from_cart(product_id):
+    # Get the user_id from the session (you may need to adjust this based on your session setup)
+    user_id = session.get('user_id')
+
+    # Check if the product is in the cart, if yes, reduce its quantity
+    cart_item = Cart.query.filter_by(
+        user_id=user_id, product_id=product_id).first()
+    if cart_item:
+        cart_item.quantity -= 1
+        if cart_item.quantity <= 0:
+            db.session.delete(cart_item)
+        db.session.commit()
+    return redirect(request.referrer)
