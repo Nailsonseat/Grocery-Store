@@ -107,3 +107,58 @@ def remove_from_cart(product_id):
             db.session.delete(cart_item)
         db.session.commit()
     return redirect(request.referrer)
+
+
+@cart_bp.route('/place_order', methods=['POST'])
+def place_order():
+    user_id = session.get('user_id')
+
+    # Retrieve the selected address ID from the form data
+    if 'delivery_address' in request.form:
+        selected_address_id = int(request.form['delivery_address'])
+    else:
+        flash('Please select a delivery address before placing an order.', 'cart')
+        return redirect(request.referrer)
+
+    # Get the cart items for the user
+    cart_items = Cart.query.filter_by(user_id=user_id).all()
+
+    if cart_items:
+        if 'coupon_id' in session:
+            coupon = UserCoupon.query.filter_by(
+                coupon_id=session['coupon_id'], id=session['user_id']).first()
+            coupon.quantity -= 1
+            if coupon.quantity <= 0:
+                db.session.delete(coupon)
+
+        # Create a new order
+        new_order = Order(
+            user_id=user_id,
+            order_date=datetime.utcnow(),
+            selected_address_id=selected_address_id,
+            total_amount=session['grand_total'],
+            status="Pending"
+        )
+        db.session.add(new_order)
+        db.session.commit()
+
+        # Create order items for each product in the cart
+        for cart_item in cart_items:
+            new_order_item = OrderItem(
+                order_id=new_order.id,
+                product_id=cart_item.product_id,
+                quantity=cart_item.quantity,
+                price_per_unit=Product.query.get(
+                    cart_item.product_id).rate_per_unit
+            )
+            db.session.add(new_order_item)
+            db.session.delete(cart_item)
+
+        session.pop('grand_total', None)
+        session.pop('coupon_id', None)
+        db.session.commit()
+        flash('Order placed successfully!', 'cart')
+    else:
+        flash('Your cart is empty. Please add items before placing an order.', 'cart')
+
+    return redirect(url_for('cart.view_cart'))
