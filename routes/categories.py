@@ -31,3 +31,19 @@ def categories():
 
     categories = Category.query.all()
     return render_template('categories.html', categories=categories)
+
+
+@categories_bp.route('/delete_category/<int:category_id>', methods=['POST'])
+def delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    products = Product.query.all()
+
+    # Delete all products under the category
+    for product in products:
+        db.session.delete(product)
+
+    # Delete the category itself
+    db.session.delete(category)
+    db.session.commit()
+
+    return redirect(url_for('categories.categories'))
