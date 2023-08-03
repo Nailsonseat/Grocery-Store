@@ -20,3 +20,12 @@ def coupons():
     coupons = Coupon.query.all()
 
     return render_template('coupons.html', coupons=coupons)
+
+
+@coupons_bp.route('/coupons/delete/<int:coupon_id>', methods=['POST'])
+def delete_coupon(coupon_id):
+    coupon = Coupon.query.get(coupon_id)
+    if coupon:
+        db.session.delete(coupon)
+        db.session.commit()
+    return redirect(url_for('coupons.coupons'))
