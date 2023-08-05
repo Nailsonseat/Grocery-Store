@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Distribute Coupons</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Your custom CSS (optional) -->
+</head>
+
+<body>
+    <!-- Navbar or any other header if needed -->
+    <nav class="navbar navbar-dark bg-dark ps-4">
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard.admin_dashboard') }}">Go back</a>
+    </nav>
+        
+    <div class="container mt-4">
+        <h1>Distribute Coupons to Users</h1>
+
+        <form method="post" action="{{ url_for('distribute_coupons.distribute') }}">
+            <div class="mb-3">
+                <label for="coupon_id" class="form-label">Select Coupon</label>
+                <select class="form-select" id="coupon_id" name="coupon_id" required>
+                    <option value="" disabled selected>Select a coupon</option>
+                    {% for coupon in coupons %}
+                    <option value="{{ coupon.id }}">{{ coupon.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <h2 class="mt-4">Users</h2>
+            <ul class="list-group">
+                {% for user in users %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ user.name }}
+                    <input type="number" class="form-control ms-3" id="coupon_quantity_{{ user.id }}"
+                        name="coupon_quantity_{{ user.id }}" min="0" required>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <button type="submit" class="btn btn-primary mt-3">Assign Coupons</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
