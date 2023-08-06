@@ -58,3 +58,13 @@ def home(name):
     if filter_over_expired:
         products = [
             product for product in products if product.expiry_date and product.expiry_date > filter_over_expired]
+
+    for product in products:
+        if get_category(categories, product.category_id) in category_map:
+            category_map[get_category(
+                categories, product.category_id)].append(product)
+        else:
+            category_map[get_category(categories, product.category_id)] = [
+                product]
+
+    return render_template('home.html', category_map=category_map, cart_map=cart_map, name=name, query=session['query'])
