@@ -51,6 +51,7 @@ class Product(db.Model):
     manufacture_date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
     rate_per_unit = db.Column(db.Float, nullable=False)
+    image_filename = db.Column(db.String(255))
 
 
 class Address(db.Model):
