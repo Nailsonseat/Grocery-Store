@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from models.tables import db, Category
+from models.tables import db, Category, Product
 import os
 
 categories_bp = Blueprint('categories', __name__)
@@ -9,7 +9,7 @@ categories_bp = Blueprint('categories', __name__)
 def edit_categories():
     if request.method == 'POST':
         new_category_name = request.form['category_name']
-        new_category_image = request.files.get('category_image')
+        new_category_image = request.files['category_image']
 
         if new_category_image:
             image_filename = new_category_image.filename
@@ -34,6 +34,14 @@ def edit_categories():
 @categories_bp.route('/delete_category/<int:category_id>', methods=['POST'])
 def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
+    products = Product.query.all()
+
+    # Delete all products under the category
+    for product in products:
+        db.session.delete(product)
+
+    # Delete the category itself
     db.session.delete(category)
     db.session.commit()
+
     return redirect(url_for('categories.edit_categories'))
