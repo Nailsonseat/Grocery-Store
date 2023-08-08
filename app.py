@@ -7,6 +7,7 @@ from routes.admin_dashboard import admin_dashboard_bp
 from routes.home import home_bp
 from routes.logout import logout_bp
 from routes.edit_categories import categories_bp
+from routes.edit_products import products_bp
 from flask import Flask, render_template
 from models.tables import db, User
 
@@ -52,6 +53,7 @@ app.register_blueprint(admin_dashboard_bp)
 app.register_blueprint(home_bp)
 app.register_blueprint(logout_bp)
 app.register_blueprint(categories_bp)
+app.register_blueprint(products_bp)
 # ... (other routes and code)
 
 if __name__ == '__main__':
