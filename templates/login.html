@@ -1,7 +1,7 @@
 <!-- templates/login.html -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>User Login</title>
@@ -16,17 +16,25 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title text-center mb-4">User Login</h1>
+                        {% with messages = get_flashed_messages(category_filter=["reg_success"]) %}
+                            {% if messages %}
+                                <div class="alert alert-success">
+                                    <p>{{ messages[-1] }}</p>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
                         <form action="/login" method="post" class="needs-validation" novalidate>
+
                             <div class="mb-3 mx-4">
-                                <label for="username" class="form-label">Username:</label>
-                                <input type="text" id="username" name="username" class="form-control" required>
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
                                 <div class="invalid-feedback">
-                                    Please enter a valid username.
+                                    Please enter a valid email.
                                 </div>
                             </div>
 
                             <div class="mb-3 mx-4">
-                                <label for="password" class="form-label">Password:</label>
+                                <label for="password" class="form-label">Password</label>
                                 <input type="password" id="password" name="password" class="form-control" required>
                                 <div class="invalid-feedback">
                                     Please enter a valid password.
