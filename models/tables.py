@@ -8,8 +8,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    mobile_number = db.Column(db.String(15))
+    dob = db.Column(db.Date)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
 
 
@@ -58,6 +61,7 @@ class Address(db.Model):
     __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    house_no = db.Column(db.String(100))
     landmark = db.Column(db.String(100))
     city = db.Column(db.String(50), nullable=False)
     state = db.Column(db.String(50), nullable=False)
