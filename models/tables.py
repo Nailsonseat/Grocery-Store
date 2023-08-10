@@ -23,7 +23,7 @@ class Coupon(db.Model):
     min_purchase = db.Column(db.Integer, nullable=False)
 
 
-class CartItem(db.Model):
+class Cart(db.Model):
     __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
