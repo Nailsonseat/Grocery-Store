@@ -12,7 +12,7 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(120), nullable=False)
     mobile_number = db.Column(db.String(15))
-    dob = db.Column(db.Date)
+   # dob = db.Column(db.Date)
     email = db.Column(db.String(120), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -21,7 +21,17 @@ class Coupon(db.Model):
     __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    min_purchase = db.Column(db.Integer, nullable=False)
+    min_cart_value = db.Column(db.Integer, nullable=False)
+    discount = db.Column(db.Integer, nullable=False)
+
+
+class UserCoupon(db.Model):
+    __bind_key__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    coupon_id = db.Column(db.Integer, db.ForeignKey(
+        'coupon.id'), nullable=False)
 
 
 class Cart(db.Model):
