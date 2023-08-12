@@ -33,8 +33,15 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Order ID: {{ order.id }}</h5>
-                        <p class="card-text">Order Date: {{ order.order_date }}</p>
+                        <p class="card-text">Order Date: {{ order.order_date.strftime('%d-%m-%Y %I:%M %p') }}</p>
                         <p class="card-text">Total Amount: {{ order.total_amount }} Rs</p>
+                        {% if order.total_amount >= 460 %}
+                        <p class="card-text">Delivery charges: 0 Rs</p>
+                        {% else %}
+                        <p class="card-text">Delivery charges: 40 Rs</p>
+                        {% endif %}
+                        <p class="card-text">Delivery address: {{ address_map[order.selected_address_id] }} </p>
+                        <p class="card-text">Order status : {{ order.status }} </p>
                         <h6 class="card-subtitle mb-3">Ordered Items:</h6>
                         <ul class="list-group">
                             {% for item in order.items %}
