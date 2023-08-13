@@ -1,9 +1,10 @@
 <!-- templates/home.html -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
     <title>Home</title>
     <!-- Include Bootstrap CSS -->
     <!-- Your custom CSS (optional) -->
@@ -12,56 +13,138 @@
 </head>
 
 <body>
-<!-- Navbar -->
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand">Grocery Mandi</a>
-        <div class="d-flex">
-            <h4 class="my-auto me-3">Welcome</h4>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ username}}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="#">Cart</a></li>
-                    <li><a class="dropdown-item" href="#">Addresses</a></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
-                </ul>
+
+    <!-- Navbar -->
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="font-size: 24px;">Grocery Mandi</a>
+            <div class="d-flex">
+                <h4 class="my-auto me-3">Welcome</h4>
+                <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ name }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="{{ url_for('my_orders.my_orders') }}">My Orders</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('profile.edit_profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('cart.view_cart')}}">Cart</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout.logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+                <form class="d-flex me-2" role="search" method="get" action="{{ url_for('home.home', category_map=category_map, cart_map=cart_map, name=name) }}">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_query" value = "{{ query }}">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+                
             </div>
-            <form class="d-flex me-2" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            
         </div>
-    </div>
-</nav>
+    </nav>
 
-
-    <!-- Main content -->
+    <!-- Filter Form Row -->
     <div class="container mt-4">
-        <!-- Check if there are products to display -->
-        {% if products %}
-        <div class="row row-cols-1 row-cols-md-3">
-            <!-- Loop through products and display them as tiles -->
-            {% for product in products %}
-            <div class="col mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">Price: {{ product.rate_per_unit }} Rs</p>
+        <form class="row g-3" method="get" action="{{ url_for('home.home', name=name) }}">
+            <!-- Category Filter -->
+            <div class="col-md-2">
+                <label for="filter_category" class="form-label">Category</label>
+                <select id="filter_category" class="form-select" name="filter_category">
+                    <option value="" selected>All Categories</option>
+                    {% for category in category_map.keys() %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <!-- Price Filters -->
+            <div class="col-md-2">
+                <label for="filter_max_price" class="form-label">Max Price</label>
+                <input id="filter_max_price" class="form-control" type="number" placeholder="Max Price"
+                    name="filter_max_price" value="{{ request.args.get('filter_max_price') }}">
+            </div>
+            <div class="col-md-2">
+                <label for="filter_min_price" class="form-label">Min Price</label>
+                <input id="filter_min_price" class="form-control" type="number" placeholder="Min Price"
+                    name="filter_min_price" value="{{ request.args.get('filter_min_price') }}">
+            </div>
+    
+            <!-- Manufacture and Expiry Date Filters -->
+            <div class="col-md-2">
+                <label for="filter_under_mfd" class="form-label">MFD Under</label>
+                <input id="filter_under_mfd" class="form-control" type="date" placeholder="Under MFD"
+                    name="filter_under_mfd" value="{{ request.args.get('filter_under_mfd') }}">
+            </div>
+            <div class="col-md-2">
+                <label for="filter_over_expired" class="form-label">Expiry Date Over</label>
+                <input id="filter_over_expired" class="form-control" type="date" placeholder="Over Expired Date"
+                    name="filter_over_expired" value="{{ request.args.get('filter_over_expired') }}">
+            </div>
+    
+            <!-- Filter Button -->
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button class="btn btn-outline-success w-100" type="submit">Apply Filters</button>
+            </div>
+        </form>
+    </div>
+
+
+
+<!-- Main content -->
+<div class="container mt-4">
+    <!-- Loop through categories -->
+    {% for category in category_map.keys() %}
+    <h1 class="my-4">{{ category.name }}</h1>
+    <div class="row row-cols-1 row-cols-md-4">
+        <!-- Loop through products for this category -->
+        {% for product in category_map[category] %}
+        <div class="col mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Price : {{ product.rate_per_unit }} Rs</p>
+                    {% if product.manufacture_date %}
+                        <p class="card-text">Manufacture : {{ product.manufacture_date }}</p>
+                    {% endif %}
+                    {% if product.expiry_date %}
+                        <p class="card-text">Expiry : {{ product.expiry_date }}</p>
+                    {% endif %}
+                    {% if product.image_filename != 'placeholder.jpg' %}
+                    <img src="{{ url_for('static', filename='product_images/' + product.image_filename) }}" class="img-fluid"
+                        alt="{{ product.name }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='placeholder.jpg') }}" class="card-img-top my-4" alt="...">
+                    {% endif %}
+                    <div class="d-flex align-items-center mt-3">
+                        <form method="post" action="{{ url_for('cart.remove_from_cart', product_id=product.id) }}">
+                                <button type="submit" class="btn btn-danger me-2">-</button>
+                        </form>
+                        {% if cart_map[product.id] %}
+                        <span class="me-2">{{ cart_map[product.id] }}</span>
+                        {% else %}
+                        <span class="me-2">0</span>
+                        {% endif %}
+                        <form method="post" action="{{ url_for('cart.add_to_cart', product_id=product.id) }}">
+                                <button type="submit" class="btn btn-success me-2">+</button>
+                        </form>
                     </div>
+
+
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        <!-- Display no products banner if there are no products -->
-        <div class="alert alert-warning" role="alert">
-            No products available.
-        </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% endfor %}
+
+    <!-- Display no products banner if there are no products -->
+    {% if category_map|length == 0 %}
+    <div class="alert alert-warning" role="alert">
+        No products available.
+    </div>
+    {% endif %}
+</div>
+
+
 
     <!-- Include Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
