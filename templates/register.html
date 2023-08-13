@@ -1,7 +1,5 @@
-<!-- templates/register.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>User Registration</title>
@@ -18,28 +16,34 @@
                         <h1 class="card-title text-center mb-4">User Registration</h1>
                         <form action="/register" method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username:</label>
-                                <input type="text" id="username" name="username" class="form-control" required>
-                                <div class="invalid-feedback">
-                                    Please enter a valid username.
-                                </div>
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="mobile_number" class="form-label">Mobile Number:</label>
+                                <input type="text" id="mobile_number" name="mobile_number" class="form-control" required>
+                            </div>
+
+                            <!-- <div class="mb-3">
+                                <label for="date_of_birth" class="form-label">Date of Birth:</label>
+                                <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" required>
+                            </div> -->
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password:</label>
                                 <input type="password" id="password" name="password" class="form-control" required>
-                                <div class="invalid-feedback">
-                                    Please enter a valid password.
-                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="confirm_password" class="form-label">Confirm Password:</label>
                                 <input type="password" id="confirm_password" name="confirm_password"
                                     class="form-control" required>
-                                <div class="invalid-feedback">
-                                    Please confirm your password.
-                                </div>
                             </div>
 
                             <div class="text-center">
