@@ -1,7 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.tables import db, User, Address
-
+import re
 profile_bp = Blueprint('profile', __name__)
+
+# Function to validate email format
+
+
+def is_valid_email(email):
+    email_pattern = re.compile(r"[^@]+@[^@]+\.[^@]+")
+    return email_pattern.match(email)
 
 
 @profile_bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -11,20 +18,36 @@ def edit_profile():
     addresses = Address.query.filter_by(user_id=user_id).all()
 
     if request.method == 'POST':
-        user.name = request.form.get('name')
-        user.email = request.form.get('email')
-        user.mobile_number = request.form.get('mobile_number')
-        user.dob = request.form.get('dob')
-        user.password = request.form.get('password')
+        name = request.form.get('name')
+        email = request.form.get('email')
+        mobile_number = request.form.get('mobile_number')
+        password = request.form.get('password')
 
-        # for address in addresses:
-        #     address.landmark = request.form[f'landmark_{address.id}']
-        #     address.city = request.form[f'city_{address.id}']
-        #     address.state = request.form[f'state_{address.id}']
-        #     address.zip_code = request.form[f'zip_code_{address.id}']
+        # Additional integrity checks
+        if not name.strip():
+            flash("Name cannot be empty.", "profile_error")
+            return redirect(url_for('profile.edit_profile'))
+
+        if not name.replace(" ", "").isalpha():
+            flash("Name should not contain numbers or special characters.",
+                  "profile_error")
+            return redirect(url_for('profile.edit_profile'))
+
+        if not is_valid_email(email):
+            flash("Invalid email format.", "profile_error")
+            return redirect(url_for('profile.edit_profile'))
+
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.", "profile_error")
+            return redirect(url_for('profile.edit_profile'))
+
+        user.name = name
+        user.email = email
+        user.mobile_number = mobile_number
+        user.password = password
 
         db.session.commit()
-        flash('Profile updated successfully!', 'success')
+        flash('Profile updated successfully!', 'profile_success')
         return redirect(url_for('profile.edit_profile'))
 
     return render_template('edit_profile.html', user=user, addresses=addresses)

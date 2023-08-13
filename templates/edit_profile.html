@@ -24,6 +24,13 @@
         <!-- Edit Profile Form -->
         <div class="mb-4">
             <h4>Edit Profile</h4>
+            {% with messages = get_flashed_messages(category_filter=["profile_error","profile_success"]) %}
+                {% if messages %}
+                    <div class="alert alert-success">
+                        <p>{{ messages[-1] }}</p>
+                    </div>
+                {% endif %}
+            {% endwith %}
             <form method="post" action="{{ url_for('profile.edit_profile') }}">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
