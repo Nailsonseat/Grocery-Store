@@ -14,7 +14,7 @@ from routes.coupons import coupons_bp
 from routes.pending_orders import pending_orders_bp
 from routes.distribute_coupons import distribute_coupons_bp
 from flask import Flask, render_template
-from models.tables import db, User
+from models.tables import db, User, Coupon
 
 
 app = Flask(__name__)
@@ -40,6 +40,11 @@ def create_initial_admin():
     if not admin_user:
         admin_user = User(name=admin_name, email=admin_email, mobile_number=admin_mobile_number,
                           password=admin_password, is_admin=True)
+        # Create the initial coupon "WELCOME50"
+        welcome_coupon = Coupon(
+            name="WELCOME50", min_cart_value=499, discount=50)
+        db.session.add(welcome_coupon)
+
         db.session.add(admin_user)
         db.session.commit()
 

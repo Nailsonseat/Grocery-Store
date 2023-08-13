@@ -12,7 +12,6 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(120), nullable=False)
     mobile_number = db.Column(db.String(15))
-   # dob = db.Column(db.Date)
     email = db.Column(db.String(120), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
 
