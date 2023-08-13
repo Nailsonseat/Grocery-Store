@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, session, request
 from models.tables import Product, Category, Cart
-
+from datetime import datetime
 
 home_bp = Blueprint('home', __name__)
 
@@ -36,8 +36,8 @@ def home(name):
     filter_category = request.args.get('filter_category')
     filter_max_price = request.args.get('filter_max_price')
     filter_min_price = request.args.get('filter_min_price')
-    filter_under_mfd = request.args.get('filter_under_mfd')
-    filter_over_expired = request.args.get('filter_over_expired')
+    filter_mfd_over = request.args.get('filter_mfd_over')
+    filter_expire_below = request.args.get('filter_expire_below')
 
     if filter_category:
         products = [
@@ -51,13 +51,13 @@ def home(name):
         products = [product for product in products if product.rate_per_unit >= float(
             filter_min_price)]
 
-    if filter_under_mfd:
+    if filter_mfd_over:
         products = [
-            product for product in products if product.manufacture_date and product.manufacture_date <= filter_under_mfd]
+            product for product in products if product.manufacture_date and product.manufacture_date >= datetime.strptime(filter_mfd_over, "%Y-%m-%d").date()]
 
-    if filter_over_expired:
+    if filter_expire_below:
         products = [
-            product for product in products if product.expiry_date and product.expiry_date > filter_over_expired]
+            product for product in products if product.expiry_date and product.expiry_date < datetime.strptime(filter_expire_below, "%Y-%m-%d").date()]
 
     for product in products:
         if get_category(categories, product.category_id) in category_map:

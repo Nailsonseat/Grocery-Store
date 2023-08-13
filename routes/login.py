@@ -1,6 +1,6 @@
 # routes/login.py
 
-from flask import Blueprint, render_template, request, redirect, session, url_for
+from flask import Blueprint, render_template, request, redirect, session, url_for, flash
 from models.tables import User
 
 login_bp = Blueprint('login', __name__)
@@ -30,8 +30,10 @@ def login():
                     return redirect(url_for('home.home', name=user.name))
 
             else:
-                return "Incorrect password. Please try again."
+                flash("Incorrect password. Please try again.", "login_error")
+                return redirect('/')
 
-        return "User does not exist. Please register an account."
+        flash("User does not exist. Please register an account.", "login_error")
+        return redirect('/')
 
     return render_template('login.html')
