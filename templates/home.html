@@ -69,14 +69,14 @@
     
             <!-- Manufacture and Expiry Date Filters -->
             <div class="col-md-2">
-                <label for="filter_under_mfd" class="form-label">MFD Under</label>
-                <input id="filter_under_mfd" class="form-control" type="date" placeholder="Under MFD"
-                    name="filter_under_mfd" value="{{ request.args.get('filter_under_mfd') }}">
+                <label for="filter_mfd_over" class="form-label">Manufacture Date Over</label>
+                <input id="filter_mfd_over" class="form-control" type="date" 
+                    name="filter_mfd_over" value="{{ request.args.get('filter_mfd_over') }}">
             </div>
             <div class="col-md-2">
-                <label for="filter_over_expired" class="form-label">Expiry Date Over</label>
-                <input id="filter_over_expired" class="form-control" type="date" placeholder="Over Expired Date"
-                    name="filter_over_expired" value="{{ request.args.get('filter_over_expired') }}">
+                <label for="filter_expire_below" class="form-label">Expiry Date Below</label>
+                <input id="filter_expire_below" class="form-control" type="date"
+                    name="filter_expire_below" value="{{ request.args.get('filter_expire_below') }}">
             </div>
     
             <!-- Filter Button -->

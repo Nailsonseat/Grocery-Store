@@ -14,6 +14,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title text-center mb-4">User Registration</h1>
+                        {% with messages = get_flashed_messages(category_filter=["reg_error"]) %}
+                            {% if messages %}
+                                <div class="alert alert-success">
+                                    <p>{{ messages[-1] }}</p>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
                         <form action="/register" method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name:</label>

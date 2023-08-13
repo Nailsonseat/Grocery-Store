@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, flash
-from models.tables import db, User
+from flask import Blueprint, render_template, request, redirect, flash, url_for
+from models.tables import db, User, Coupon, UserCoupon
 
 register_bp = Blueprint('register', __name__)
 
@@ -24,11 +24,21 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
 
+                welcome_coupon = Coupon.query.filter_by(
+                    name="WELCOME50").first()
+                if welcome_coupon:
+                    user_coupon = UserCoupon(
+                        user_id=new_user.id, coupon_id=welcome_coupon.id, quantity=1)
+                    db.session.add(user_coupon)
+                    db.session.commit()
+
                 flash('Registration complete', 'reg_success')
                 return redirect('/')
 
-            return "Passwords do not match. Please try again."
+            flash("Passwords do not match. Please try again.", "reg_error")
+            return redirect(url_for('register.register'))
 
-        return "Email already taken. Please use a different one."
+        flash("Email already taken. Please use a different one.", "reg_error")
+        return redirect(url_for('register.register'))
 
     return render_template('register.html')

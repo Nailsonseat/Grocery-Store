@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title text-center mb-4">User Login</h1>
-                        {% with messages = get_flashed_messages(category_filter=["reg_success"]) %}
+                        {% with messages = get_flashed_messages(category_filter=["reg_success","login_error"]) %}
                             {% if messages %}
                                 <div class="alert alert-success">
                                     <p>{{ messages[-1] }}</p>
