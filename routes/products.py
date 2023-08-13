@@ -25,11 +25,16 @@ def add_products():
 
         # Convert manufacture_date and expiry_date to date objects
         if manufacture_date:
+            manufacture_date = datetime.strptime(manufacture_date, '%Y-%m-%d')
+            manufacture_date = manufacture_date.strftime('%d-%m-%Y')
             manufacture_date = datetime.strptime(
                 manufacture_date, '%d-%m-%Y').date()
 
         if expiry_date:
-            expiry_date = datetime.strptime(expiry_date, '%d-%m-%Y').date()
+            expiry_date = datetime.strptime(expiry_date, '%Y-%m-%d')
+            expiry_date = expiry_date.strftime('%d-%m-%Y')
+            expiry_date = datetime.strptime(
+                expiry_date, '%d-%m-%Y').date()
 
         if product_image:
             image_extension = product_image.filename.rsplit('.', 1)[1]
@@ -101,10 +106,16 @@ def edit_product(product_id):
         product_image = request.files['edit_product_image']
 
         if product.manufacture_date:
+            manufacture_date = datetime.strptime(
+                product.manufacture_date, '%Y-%m-%d')
+            product.manufacture_date = manufacture_date.strftime(
+                '%d-%m-%Y')
             product.manufacture_date = datetime.strptime(
                 product.manufacture_date, '%d-%m-%Y').date()
 
         if product.expiry_date:
+            expiry_date = datetime.strptime(product.expiry_date, '%Y-%m-%d')
+            product.expiry_date = expiry_date.strftime('%d-%m-%Y')
             product.expiry_date = datetime.strptime(
                 product.expiry_date, '%d-%m-%Y').date()
 
