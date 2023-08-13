@@ -77,3 +77,61 @@ def add_products():
             categories, product.category_id)].append(product)
 
     return render_template('add_products.html', category_map=category_map)
+
+
+@products_bp.route('/delete_product/<int:product_id>', methods=['POST'])
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+    return redirect(url_for('products.add_products'))
+
+
+@products_bp.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    categories = Category.query.all()
+
+    if request.method == 'POST':
+        product.name = request.form['edit_product_name']
+        product.category_id = request.form['edit_product_category']
+        product.manufacture_date = request.form['edit_mfd']
+        product.expiry_date = request.form['edit_expiry_date']
+        product.rate_per_unit = request.form['edit_rate_per_unit']
+        product_image = request.files['edit_product_image']
+
+        if product.manufacture_date:
+            product.manufacture_date = datetime.strptime(
+                product.manufacture_date, '%d-%m-%Y').date()
+
+        if product.expiry_date:
+            product.expiry_date = datetime.strptime(
+                product.expiry_date, '%d-%m-%Y').date()
+
+        if product_image:
+            image_extension = product_image.filename.rsplit('.', 1)[1]
+            image_filename = f"{product.name}_product.{image_extension}"
+            product_image.save(os.path.join(
+                'static', 'product_images', image_filename))
+
+            # Remove the existing image file
+            if product.image_filename and product.image_filename != 'placeholder.jpg':
+                existing_image_path = os.path.join(
+                    'static', 'product_images', product.image_filename)
+                os.remove(existing_image_path)
+
+            product.image_filename = image_filename
+        else:
+            # If no product image is provided, retain the existing image
+            pass
+
+        if product.manufacture_date == '':
+            product.manufacture_date = None
+
+        if product.expiry_date == '':
+            product.expiry_date = None
+
+        db.session.commit()
+        return redirect(url_for('products.add_products'))
+
+    return render_template('edit_product.html', product=product, categories=categories)
