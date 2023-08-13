@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Edit Product - {{ product.name }}</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="btn btn-dark" href="{{ url_for('products.add_products') }}">Back</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Edit Product - {{ product.name }}</h1>
+        <form method="post" action="{{ url_for('products.edit_product', product_id=product.id) }}" enctype="multipart/form-data">
+            <input type="text" class="form-control" id="edit_product_name" name="edit_product_name" value="{{ product.name }}"
+                required>
+
+                <div class="mb-3">
+                    <label for="edit_product_category" class="form-label">Category</label>
+                    <select class="form-select" id="edit_product_category" name="edit_product_category" required>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id==product.category_id %}selected{% endif %}>
+                            {{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="edit_mfd" class="form-label">Manufacture Date</label>
+                    <input type="date" class="form-control" id="edit_mfd" name="edit_mfd" value="{{ product.manufacture_date }}">
+                </div>
+                <div class="mb-3">
+                    <label for="edit_expiry_date" class="form-label">Expiry Date</label>
+                    <input type="date" class="form-control" id="edit_expiry_date" name="edit_expiry_date"
+                        value="{{ product.expiry_date }}">
+                </div>
+                <div class="mb-3">
+                    <label for="edit_rate_per_unit" class="form-label">Rate per Unit</label>
+                    <input type="number" step="0.1" class="form-control" id="edit_rate_per_unit" name="edit_rate_per_unit"
+                        value="{{ product.rate_per_unit }}" required min="0">
+                </div>
+                <div class="mb-3">
+                    <label for="edit_product_image" class="form-label">Product Image</label>
+                    <input type="file" class="form-control" id="edit_product_image" name="edit_product_image">
+                </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+       
+    </div>
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
