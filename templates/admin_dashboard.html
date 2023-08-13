@@ -18,23 +18,23 @@
                 <ul class="list-group">
                     <li class="list-group-item">
                         <h5 class="mt-2 mb-3">Current pending orders</h5>
-                        <a href="#" class="btn btn-primary mb-2">Pending Orders</a>
+                        <a href="{{ url_for('pending_orders.pending_orders') }}" class="btn btn-primary mb-2">Pending Orders</a>
                     </li>
                     <li class="list-group-item">
                         <h5 class="mt-2 mb-3">Add or remove products</h5>
-                        <a href="{{ url_for('products.edit_products') }}" class="btn btn-primary mb-2">Edit Products</a>
+                        <a href="{{ url_for('products.add_products') }}" class="btn btn-primary mb-2">Edit Products</a>
                     </li>
                     <li class="list-group-item">
                         <h5 class="mt-2 mb-3">Add or remove product categories</h5>
-                        <a href="{{ url_for('categories.edit_categories') }}" class="btn btn-primary mb-2">Edit Categories</a>
+                        <a href="{{ url_for('categories.categories') }}" class="btn btn-primary mb-2">Edit Categories</a>
                     </li>
                     <li class="list-group-item">
                         <h5 class="mt-2 mb-3">Add or remove coupons</h5>
-                        <a href="#" class="btn btn-primary mb-2">Add coupons</a>
+                        <a href="{{ url_for('coupons.coupons') }}" class="btn btn-primary mb-2">Manage coupons</a>
                     </li>
                     <li class="list-group-item">
                         <h5 class="mt-2 mb-3">Give away coupons to users</h5>
-                        <a href="#" class="btn btn-primary mb-2">Distribute Coupons</a>
+                        <a href="{{ url_for('distribute_coupons.distribute') }}" class="btn btn-primary mb-2">Distribute Coupons</a>
                     </li>
                 </ul>
             </div>
