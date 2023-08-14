@@ -48,8 +48,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     {% if product_map[item.product_id].image_filename != 'placeholder.jpg' %}
-                                    <img src="{{ url_for('static', filename='product_images/' + product_map[item.product_id].image_filename) }}" class="img-fluid"
-                                        alt="{{ product.name }}">
+                                    <img src="{{ url_for('static', filename='product_images/' + product_map[item.product_id].image_filename) }}" class="img-fluid product-image-small me-2">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='placeholder.jpg') }}" class="img-fluid product-image-small me-2" alt="...">
                                     {% endif %}
