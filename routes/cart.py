@@ -67,7 +67,7 @@ def view_cart():
             return render_template('cart.html', selected_coupon=selected_coupon, cart_products=cart_products, cart_map=cart_map, grand_total=delivery_charge(grand_total), addresses=addresses, coupon_map=coupon_map)
         else:
             flash(
-                f'The minimum cart value should be {selected_coupon.min_cart_value}')
+                f'The minimum cart value should be {selected_coupon.min_cart_value}', 'cart')
 
     session['grand_total'] = delivery_charge(grand_total)
 
@@ -126,10 +126,11 @@ def place_order():
     if cart_items:
         if 'coupon_id' in session:
             coupon = UserCoupon.query.filter_by(
-                coupon_id=session['coupon_id'], id=session['user_id']).first()
+                coupon_id=session['coupon_id'], user_id=session['user_id']).first()
             coupon.quantity -= 1
             if coupon.quantity <= 0:
                 db.session.delete(coupon)
+        session.pop('coupon_id', None)
 
         # Create a new order
         new_order = Order(
@@ -155,7 +156,6 @@ def place_order():
             db.session.delete(cart_item)
 
         session.pop('grand_total', None)
-        session.pop('coupon_id', None)
         db.session.commit()
         flash('Order placed successfully!', 'cart')
     else:
