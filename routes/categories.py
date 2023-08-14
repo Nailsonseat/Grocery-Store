@@ -36,11 +36,19 @@ def categories():
 @categories_bp.route('/delete_category/<int:category_id>', methods=['POST'])
 def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
-    products = Product.query.all()
+    products = Product.query.filter_by(category_id=category_id).all()
 
-    # Delete all products under the category
+    # Delete products and their images under the category
     for product in products:
-        db.session.delete(product)
+        if product.image_filename and product.image_filename != 'placeholder.jpg':
+            image_path = os.path.join(
+                'static', 'product_images', product.image_filename)
+            os.remove(image_path)
+        # Delete the category image
+    if category.image_filename and category.image_filename != 'placeholder.jpg':
+        image_path = os.path.join(
+            'static', 'category_images', category.image_filename)
+        os.remove(image_path)
 
     # Delete the category itself
     db.session.delete(category)
