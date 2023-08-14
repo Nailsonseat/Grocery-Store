@@ -7,7 +7,7 @@ from routes.home import home_bp
 from routes.logout import logout_bp
 from routes.categories import categories_bp
 from routes.products import products_bp
-from routes.profile import profile_bp
+from routes.user_profile import profile_bp
 from routes.my_orders import my_orders_bp
 from routes.cart import cart_bp
 from routes.coupons import coupons_bp
