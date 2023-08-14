@@ -37,14 +37,15 @@ def edit_profile():
             flash("Invalid email format.", "profile_error")
             return redirect(url_for('profile.edit_profile'))
 
-        if len(password) < 8:
+        if len(password) < 8 and len(password) > 0:
             flash("Password must be at least 8 characters long.", "profile_error")
             return redirect(url_for('profile.edit_profile'))
 
         user.name = name
         user.email = email
         user.mobile_number = mobile_number
-        user.password = password
+        if len(password) > 0:
+            user.password = password
 
         db.session.commit()
         flash('Profile updated successfully!', 'profile_success')
