@@ -85,6 +85,13 @@ def add_products():
 @products_bp.route('/delete_product/<int:product_id>', methods=['POST'])
 def delete_product(product_id):
     product = Product.query.get_or_404(product_id)
+
+    # Delete the product image if it exists
+    if product.image_filename and product.image_filename != 'placeholder.jpg':
+        image_path = os.path.join(
+            'static', 'product_images', product.image_filename)
+        os.remove(image_path)
+
     db.session.delete(product)
     db.session.commit()
     return redirect(url_for('products.add_products'))
